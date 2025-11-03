@@ -100,6 +100,9 @@ const Login = () => {
                     {formik.errors.password && (
                       <div className="text-danger mb-2">{formik.errors.password}</div>
                     )}
+                    {message && (
+                      <div className="text-danger mb-2">{message}</div>
+                    )}
 
                     {/* ✅ Buttons */}
                     <CRow>

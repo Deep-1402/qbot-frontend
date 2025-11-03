@@ -1,18 +1,20 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import api from '../apis/axiosInstance.js'
 
-// const userSsignup = createAsyncThunk("signup", async (credentials) => {
-//   const info = await api
-//     .post("signup", credentials)
-//     .then((result) => result.data)
-//     .catch((error) => {
-//       // console.log(error, error.response.data.error)
-//       return { log: error.response.data.error };
-//     });
-//   // .catch((error) => (error.data.error, console.log(error)));
-//   console.log(info);
-//   return info;
-// });
+const tenantCreation = createAsyncThunk('tenant', async (credentials) => {
+  const info = await api
+    .post('master/signup', credentials)
+    .then((result) => {
+      return { status: result.status, data: result.data }
+    })
+    .catch((error) => {
+      // console.log(error, error.response.data.error)
+      return { log: error.response.data.error }
+    })
+  // .catch((error) => (error.data.error, console.log(error)));
+  console.log(info)
+  return info
+})
 
 const login = createAsyncThunk('login', async (credentials) => {
   const info = await api
@@ -47,10 +49,10 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // .addCase(userSsignup.fulfilled, (state, action) => {
-      //   // state.message.push(action.payload.log);
-      //   state.message = action.payload.log
-      // })
+      .addCase(tenantCreation.fulfilled, (state, action) => {
+        // state.message.push(action.payload.log);
+        state.message = action.payload.log
+      })
       .addCase(login.fulfilled, (state, action) => {
         // if()
         // console.log(info.data.token)
@@ -59,7 +61,7 @@ const authSlice = createSlice({
         }
         console.log(action, action.payload.log, state)
 
-        // state.message = action.payload.log
+        state.message = action.payload.data.log
         // state.status = action.payload.status
         // console.log("fullfilled");
       })
@@ -71,4 +73,4 @@ const authSlice = createSlice({
 export const {} = authSlice.actions
 export default authSlice.reducer
 // apis
-export { login }
+export { login, tenantCreation }

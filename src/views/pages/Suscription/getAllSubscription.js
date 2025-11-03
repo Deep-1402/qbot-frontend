@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   CTable,
   CTableHead,
@@ -9,37 +9,49 @@ import {
   CButton,
   CBadge,
 } from '@coreui/react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { getAll } from '../../../slices/master/subscription'
 
 const PlanTable = () => {
-  const plans = [
-    {
-      id: 102,
-      name: 'Standard',
-      price: '7898.00',
-      description: 'Better one',
-      max_users: 3,
-      is_active: true,
-      createdAt: '2025-10-30T06:09:21.000Z',
-    },
-    {
-      id: 103,
-      name: 'Premium',
-      price: '12999.00',
-      description: 'Full access plan',
-      max_users: 10,
-      is_active: false,
-      createdAt: '2025-09-15T10:30:00.000Z',
-    },
-    {
-      id: 104,
-      name: 'Enterprise',
-      price: '24999.00',
-      description: 'For large teams',
-      max_users: 50,
-      is_active: true,
-      createdAt: '2025-07-22T12:00:00.000Z',
-    },
-  ]
+
+  const {message , plans} = useSelector(state => state.subscription)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  // dummy One
+  // const plans = [
+  //   {
+  //     id: 102,
+  //     name: 'Standard',
+  //     price: '7898.00',
+  //     description: 'Better one',
+  //     max_users: 3,
+  //     is_active: true,
+  //     createdAt: '2025-10-30T06:09:21.000Z',
+  //   },
+  //   {
+  //     id: 103,
+  //     name: 'Premium',
+  //     price: '12999.00',
+  //     description: 'Full access plan',
+  //     max_users: 10,
+  //     is_active: false,
+  //     createdAt: '2025-09-15T10:30:00.000Z',
+  //   },
+  //   {
+  //     id: 104,
+  //     name: 'Enterprise',
+  //     price: '24999.00',
+  //     description: 'For large teams',
+  //     max_users: 50,
+  //     is_active: true,
+  //     createdAt: '2025-07-22T12:00:00.000Z',
+  //   },
+  // ]
+  useEffect(()=>{
+    dispatch(getAll())
+  },[])
 
   return (
     <div className="p-4">

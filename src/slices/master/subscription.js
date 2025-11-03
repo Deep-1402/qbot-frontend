@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import api from '../apis/axiosInstance.js'
+import api from '../../apis/axiosInstance.js'
 
 // const userSsignup = createAsyncThunk("signup", async (credentials) => {
 //   const info = await api
@@ -14,13 +14,15 @@ import api from '../apis/axiosInstance.js'
 //   return info;
 // });
 
-const getAll = createAsyncThunk('getAll', async (credentials) => {
+const getAll = createAsyncThunk('getAll', async () => {
   const info = await api
-    .post('master/login', credentials)
+    .get('master/subscription')
     .then((result) => {
+      console.log(result)
       return { status: result.status, data: result.data }
     })
     .catch((error) => {
+      console.log(error)
       return { log: error.response.data.log }
       // console.log(error.response.data.log);
       // return { log: error };
@@ -52,13 +54,14 @@ const subscriptionSlice = createSlice({
       //   // state.message.push(action.payload.log);
       //   state.message = action.payload.log
       // })
-      .addCase(login.fulfilled, (state, action) => {
+      .addCase(getAll.fulfilled, (state, action) => {
         // if()
         // console.log(info.data.token)
-        if (action.payload.status == 200) {
-          localStorage.setItem('token', action.payload.data.token)
-        }
-        console.log(action, action.payload.log, state)
+        // if (action.payload.status == 200) {
+        //   localStorage.setItem('token', action.payload.data.token)
+        // }
+        state.plans = action.payload.data.plans
+        console.log(action, state)
 
         // state.message = action.payload.log
         // state.status = action.payload.status
@@ -69,7 +72,7 @@ const subscriptionSlice = createSlice({
     // });
   },
 })
-export const {} = authSlice.actions
-export default authSlice.reducer
+export const {} = subscriptionSlice.actions
+export default subscriptionSlice.reducer
 // apis
-export { login }
+export { getAll }
