@@ -53,7 +53,7 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 // Tenants
 const Register = React.lazy(() => import('./views/pages/register/Register'))
-const getSubscription = React.lazy(() => import('./views/pages/Suscription/getAllSubscription'))
+const getUsers = React.lazy(() => import('./views/pages/tenant/userList'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -105,7 +105,7 @@ const routes = [
   { path: '/tenant/create', name: 'Create Tenant', element: Register },
   // { path : "/tenant/get", name : "All Tenants", element : },
   // { path : "/subscription/create", name : "Create Subscription Plan", element : },
-  { path: '/subscription/get', name: 'Get All Subscription Plan', element: getSubscription },
+  { path: '/tenant/user/get', name: 'Get All Users', element: getUsers },
 ]
 
 export default routes

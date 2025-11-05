@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import api from '../apis/axiosInstance.js'
+import { useNavigate } from 'react-router-dom'
+
 
 const tenantCreation = createAsyncThunk('tenant', async (credentials) => {
   const info = await api
@@ -18,12 +20,12 @@ const tenantCreation = createAsyncThunk('tenant', async (credentials) => {
 
 const login = createAsyncThunk('login', async (credentials) => {
   const info = await api
-    .post('master/login', credentials)
+    .post('tenant/login', credentials)
     .then((result) => {
       return { status: result.status, data: result.data }
     })
     .catch((error) => {
-      return { log: error.response.data.log }
+      return { message: error.response.data.message }
       // console.log(error.response.data.log);
       // return { log: error };
     })
@@ -32,7 +34,7 @@ const login = createAsyncThunk('login', async (credentials) => {
   // if(info.status == 200 ){
   //   localStorage.setItem("token", info.data.token)
   // }
-  console.log(info)
+  // console.log(info)
   return info
 })
 
@@ -40,12 +42,14 @@ const authSlice = createSlice({
   name: 'auth',
   initialState: {
     message: null,
+    permission: [],
     status: null,
   },
   reducers: {
-    // signup: (state) => {
-    //   // state.value += 1;
-    // },
+    logout: () => {
+      localStorage.removeItem("token");
+      // navigate("/login")
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -56,12 +60,13 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         // if()
         // console.log(info.data.token)
+        console.log(action, action.payload.data.data.permissions, action.payload.data)
         if (action.payload.status == 200) {
-          localStorage.setItem('token', action.payload.data.token)
+          localStorage.setItem('token', action.payload.data.data.token)
+          state.permission = action.payload.data.data.permissions
         }
-        console.log(action, action.payload.log, state)
-
-        state.message = action.payload.data.log
+        state.message = action.payload.message
+        // console.log(action.payload)
         // state.status = action.payload.status
         // console.log("fullfilled");
       })
@@ -70,7 +75,12 @@ const authSlice = createSlice({
     // });
   },
 })
-export const {} = authSlice.actions
+export const {logout} = authSlice.actions
 export default authSlice.reducer
 // apis
 export { login, tenantCreation }
+
+
+/*
+
+*/

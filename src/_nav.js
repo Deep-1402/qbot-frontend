@@ -23,19 +23,19 @@ const _nav = [
 
   {
     component: CNavGroup,
-    name: 'Subscription ',
+    name: 'Users ',
     to: '/buttons',
     icon: <CIcon icon={cilMoney} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
-        name: 'Create Plan',
+        name: 'Create Users',
         to: '/subscription/create',
       },
       {
         component: CNavItem,
-        name: 'Show Plans',
-        to: '/subscription/get',
+        name: 'Show Users',
+        to: '/tenant/user/get',
       },
       // {
       //   component: CNavItem,

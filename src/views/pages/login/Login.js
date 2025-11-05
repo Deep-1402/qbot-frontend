@@ -1,5 +1,5 @@
-import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useContext, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import {
@@ -17,19 +17,20 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
-import { useDispatch, useSelector } from 'react-redux'
-import { login } from '../../../slices/auth'
+import { TenantContext } from '../../../context/tenent'
+// import { useDispatch, useSelector } from 'react-redux'
+// import { login } from '../../../slices/auth'
 
-// // ✅ Yup validation schema
+// Yup validation schema
 // const validationSchema =
 
 const Login = () => {
+  // const [message , setMessage ] = useState(null)
+  // let { message, status } = useSelector((state) => state.auth)
+  // const dispatch = useDispatch()
+  const { login, userPermissions , message} = useContext(TenantContext)
 
-  let {message , status } = useSelector(state => state.auth);
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-
-  // ✅ useFormik hook
+  //  useFormik hook
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -44,13 +45,16 @@ const Login = () => {
     onSubmit: async (values) => {
       console.log('Login form submitted:', values)
       // Here you can handle actual login API call
-      const {payload} = await dispatch(login(values));
-      console.log(payload)
-      if(payload.status == 200){
-        navigate("/dashboard")
-      }
+      await login(values)
+      // console.log(userPermissions, "ss")
     },
   })
+  // useEffect(() => {
+  //   if (userPermissions) {
+  //     console.log('Permissions updated:', userPermissions)
+  //     // e.g. navigate('/tenant/users/get')
+  //   }
+  // }, [userPermissions])
 
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
@@ -60,12 +64,12 @@ const Login = () => {
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
-                  {/* ✅ Formik form */}
+                  {/*  Formik form */}
                   <CForm onSubmit={formik.handleSubmit}>
                     <h1>Login</h1>
                     <p className="text-body-secondary">Sign In to your account</p>
 
-                    {/* ✅ Email Input */}
+                    {/*  Email Input */}
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
@@ -83,7 +87,7 @@ const Login = () => {
                       <div className="text-danger mb-2">{formik.errors.email}</div>
                     )}
 
-                    {/* ✅ Password Input */}
+                    {/*  Password Input */}
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
                         <CIcon icon={cilLockLocked} />
@@ -100,11 +104,9 @@ const Login = () => {
                     {formik.errors.password && (
                       <div className="text-danger mb-2">{formik.errors.password}</div>
                     )}
-                    {message && (
-                      <div className="text-danger mb-2">{message}</div>
-                    )}
+                    {message && <div className="text-danger mb-2">{message}</div>}
 
-                    {/* ✅ Buttons */}
+                    {/*  Buttons */}
                     <CRow>
                       <CCol xs={6}>
                         <CButton type="submit" color="primary" className="px-4">
@@ -121,7 +123,7 @@ const Login = () => {
                 </CCardBody>
               </CCard>
 
-              {/* ✅ Right-side card */}
+              {/*  Right-side card */}
               <CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>
                 <CCardBody className="text-center">
                   <div>

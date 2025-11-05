@@ -15,7 +15,7 @@ let ProtectedRoute = ({ children }) => {
           localStorage.removeItem("token");
           navigate("/login");
         }
-        console.log(token,"dd")
+        // console.log(token,"dd")
       } catch (error) {
         localStorage.removeItem("token");
         navigate("/login");
